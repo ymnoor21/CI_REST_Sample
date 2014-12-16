@@ -17,9 +17,17 @@ class Welcome extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-	public function index()
-	{
-		$this->load->view('welcome_message');
+	public function index() {
+		$this->load->library('curl'); 
+		$this->curl->create('http://ec2-54-218-59-122.us-west-2.compute.amazonaws.com/index.php/example_api/user');
+
+		// Login to HTTP user authentication
+		$this->curl->http_login('admin', '1234');
+
+		$post = array('name'=>'Yamin Noor', 'email'=>'ymnoor21@gmail.com');
+		$this->curl->post($post);
+
+		echo $response = $this->curl->execute();
 	}
 }
 
