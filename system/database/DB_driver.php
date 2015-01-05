@@ -234,6 +234,34 @@ class CI_DB_driver {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Get ENUM field data
+	 *
+	 * Accepts table name and field name and returns the list
+	 *
+	 * @access	public
+	 * @param	string	table name
+	 * @param	array	field name
+	 * @return	array 	a list of items
+	 */
+	function enum_select($table , $field)
+    {
+        $query = "SHOW COLUMNS FROM ".$table." LIKE '$field'";
+        $row = $this->query("SHOW COLUMNS FROM ".$table." LIKE '$field'")->row()->Type;
+        $regex = "/'(.*?)'/";
+        preg_match_all( $regex , $row, $enum_array );
+        $enum_fields = $enum_array[1];
+        
+        foreach ($enum_fields as $key=>$value)
+        {
+            $enums[] = $value; 
+        }
+
+        return $enums;
+    } 
+
+	// --------------------------------------------------------------------
+
+	/**
 	 * Execute the query
 	 *
 	 * Accepts an SQL string as input and returns a result object upon
